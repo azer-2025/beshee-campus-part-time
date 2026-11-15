@@ -1,0 +1,119 @@
+@use "sass:map";
+
+// 极光玻璃拟态主题变量 (Aurora Glassmorphism)
+$theme: (
+  primary: #6366f1,    // Indigo
+  secondary: #ec4899,  // Pink
+  accent: #8b5cf6,     // Violet
+  text-main: #1f2937,  // Dark Gray
+  text-light: #6b7280, // Light Gray
+  white: #ffffff,
+  
+  // Glass Effects
+  glass-bg: rgba(255, 255, 255, 0.7),
+  glass-border: rgba(255, 255, 255, 0.5),
+  glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15),
+  
+  // Card Gradients
+  card-gradient-1: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.4) 100%),
+  card-gradient-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 100%),
+);
+
+// Mixins
+@mixin glass-card {
+  background: map.get($theme, glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid map.get($theme, glass-border);
+  box-shadow: map.get($theme, glass-shadow);
+  border-radius: 20px;
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@mixin aurora-text {
+  background: linear-gradient(to right, #4f46e5, #ec4899, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@mixin page-header-glass {
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  
+  h2, .header-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    @include aurora-text;
+  }
+  
+  p, .header-subtitle {
+    font-size: 1.1rem;
+    color: map.get($theme, text-light);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@mixin aurora-breadcrumb {
+  display: inline-flex;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin-bottom: 1.5rem;
+  
+  :deep(.el-breadcrumb__item) {
+    .el-breadcrumb__inner {
+      color: map.get($theme, text-light);
+      font-weight: 500;
+      &.is-link:hover {
+        color: map.get($theme, primary);
+      }
+    }
+    &:last-child .el-breadcrumb__inner {
+      color: map.get($theme, text-main);
+      font-weight: 700;
+    }
+  }
+}
+
+// Global Animation Keyframes
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-slow {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

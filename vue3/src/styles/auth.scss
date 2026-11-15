@@ -1,0 +1,379 @@
+@use "sass:map";
+@use "sass:color";
+
+// 极光玻璃拟态主题 (Aurora Glassmorphism)
+$theme: (
+  primary: #6366f1,    // Indigo
+  secondary: #ec4899,  // Pink
+  accent: #8b5cf6,     // Violet
+  text-main: #1f2937,  // Dark Gray
+  text-light: #6b7280, // Light Gray
+  white: #ffffff,
+  glass-bg: rgba(255, 255, 255, 0.7),
+  glass-border: rgba(255, 255, 255, 0.5),
+  glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15),
+);
+
+// 背景动画
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  
+  // 装饰性光晕
+  &::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    top: -200px;
+    left: -200px;
+    border-radius: 50%;
+    filter: blur(50px);
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    bottom: -150px;
+    right: -150px;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: float 10s ease-in-out infinite reverse;
+  }
+}
+
+.auth-card-wrapper {
+  display: flex;
+  width: 1000px;
+  max-width: 95vw;
+  min-height: 600px;
+  background: map.get($theme, glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid map.get($theme, glass-border);
+  box-shadow: map.get($theme, glass-shadow);
+  overflow: hidden;
+  animation: fade-in-up 0.8s ease-out;
+  z-index: 10;
+  
+  // 左侧品牌区
+  .auth-brand {
+    flex: 1.2;
+    background: rgba(255, 255, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    
+    .logo-container {
+      margin-bottom: 2rem;
+      animation: float 6s ease-in-out infinite;
+      
+      .logo-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, map.get($theme, primary), map.get($theme, secondary));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(map.get($theme, primary), 0.3);
+        color: white;
+        font-size: 2.5rem;
+        font-weight: bold;
+        transform: rotate(-5deg);
+        transition: transform 0.3s ease;
+        
+        &:hover {
+          transform: rotate(0deg) scale(1.05);
+        }
+      }
+    }
+    
+    .brand-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #4f46e5, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .brand-slogan {
+      font-size: 1.1rem;
+      color: map.get($theme, text-main);
+      text-align: center;
+      line-height: 1.6;
+      opacity: 0.8;
+      max-width: 80%;
+    }
+    
+    .brand-illustration {
+      margin-top: 3rem;
+      width: 100%;
+      max-width: 320px;
+      opacity: 0.9;
+      transition: transform 0.5s ease;
+      
+      &:hover {
+        transform: scale(1.02);
+      }
+      
+      img {
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+      }
+    }
+  }
+  
+  // 右侧表单区
+  .auth-form-container {
+    flex: 1;
+    padding: 3.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    .auth-header {
+      margin-bottom: 2.5rem;
+      
+      .auth-tabs {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        
+        .tab-item {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: map.get($theme, text-light);
+          cursor: pointer;
+          padding-bottom: 0.5rem;
+          position: relative;
+          transition: all 0.3s ease;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(to right, map.get($theme, primary), map.get($theme, secondary));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+          }
+          
+          &:hover {
+            color: map.get($theme, text-main);
+          }
+          
+          &.active {
+            color: map.get($theme, text-main);
+            
+            &::after {
+              width: 100%;
+            }
+          }
+        }
+      }
+      
+      .welcome-text {
+        .welcome-title {
+          font-size: 2.2rem;
+          font-weight: 700;
+          color: map.get($theme, text-main);
+          margin-bottom: 0.5rem;
+          letter-spacing: -0.5px;
+        }
+        .welcome-subtitle {
+          color: map.get($theme, text-light);
+          font-size: 1.1rem;
+        }
+      }
+    }
+    
+    .auth-form-content {
+      .el-form-item {
+        margin-bottom: 1.5rem;
+      }
+
+      .el-input {
+        --el-input-height: 52px;
+        
+        .el-input__wrapper {
+          background-color: rgba(255, 255, 255, 0.8) !important;
+          border-radius: 12px;
+          border: 1px solid rgba(0,0,0,0.05) !important;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
+          padding: 0 15px;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background-color: #fff !important;
+            border-color: rgba(99, 102, 241, 0.3) !important;
+          }
+          
+          &.is-focus {
+            background-color: #fff !important;
+            border-color: map.get($theme, primary) !important;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+          }
+          
+          input {
+            color: map.get($theme, text-main);
+            font-weight: 500;
+            
+            &::placeholder {
+              color: #9ca3af;
+            }
+          }
+        }
+      }
+      
+      .submit-btn {
+        width: 100%;
+        height: 54px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, map.get($theme, primary), map.get($theme, accent));
+        color: white;
+        border: none;
+        font-size: 1.15rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-top: 1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+          filter: brightness(1.1);
+        }
+        
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+      }
+      
+      .form-extras {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1.5rem 0;
+        
+        .el-checkbox {
+          height: auto;
+          .el-checkbox__label {
+            color: map.get($theme, text-light);
+            font-size: 0.95rem;
+          }
+          .el-checkbox__input.is-checked .el-checkbox__inner {
+            background-color: map.get($theme, primary);
+            border-color: map.get($theme, primary);
+          }
+        }
+        
+        a, .forget-link {
+          color: map.get($theme, primary);
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: all 0.2s;
+          
+          &:hover {
+            color: map.get($theme, accent);
+          }
+        }
+      }
+      
+      .bottom-links {
+        margin-top: 2.5rem;
+        text-align: center;
+        color: map.get($theme, text-light);
+        font-size: 1rem;
+        
+        a {
+          color: map.get($theme, secondary);
+          font-weight: 700;
+          text-decoration: none;
+          margin-left: 8px;
+          transition: all 0.2s;
+          
+          &:hover {
+            text-decoration: underline;
+            filter: brightness(0.9);
+          }
+        }
+      }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 1024px) {
+  .auth-card-wrapper {
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+    
+    .auth-brand {
+      padding: 2rem;
+      min-height: 200px;
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      
+      .logo-container { margin-bottom: 1rem; .logo-icon { width: 60px; height: 60px; font-size: 1.8rem; } }
+      .brand-title { font-size: 1.8rem; }
+      .brand-illustration { display: none; }
+    }
+    
+    .auth-form-container {
+      padding: 2.5rem;
+    }
+  }
+}
